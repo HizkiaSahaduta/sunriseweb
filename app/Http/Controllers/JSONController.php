@@ -582,4 +582,122 @@ class JSONController extends Controller
 
 
     }
+
+    public function listPIC($id){
+
+        if ($id == "SR") {
+
+            $result = DB::connection("sqlsrv2")
+                    ->select(DB::raw("select LTRIM(RTRIM(a.pic_id)) as pic_id, LTRIM(RTRIM(b.dept_id)) as dept_id, LTRIM(RTRIM(b.descr)) as descr, 
+                    LTRIM(RTRIM(a.pic_name)) as pic_name
+                    from pic_dept a
+                    inner join depart b on a.dept_id = b.dept_id"));
+
+            return response()->json($result);
+
+        }
+
+        else 
+        {
+
+            $result = DB::connection("sqlsrv3")
+                    ->select(DB::raw("select LTRIM(RTRIM(a.pic_id)) as pic_id, LTRIM(RTRIM(b.dept_id)) as dept_id, LTRIM(RTRIM(b.descr)) as descr, 
+                    LTRIM(RTRIM(a.pic_name)) as pic_name
+                    from pic_dept a
+                    inner join depart b on a.dept_id = b.dept_id"));
+
+            return response()->json($result);
+
+
+        }
+
+
+    }
+
+    public function listDept($id){
+
+        if ($id == "SR") {
+
+            $result = DB::connection("sqlsrv2")
+                    ->select(DB::raw("select LTRIM(RTRIM(dept_id)) as dept_id, LTRIM(RTRIM(descr)) as descr from depart"));
+
+            return response()->json($result);
+
+        }
+
+        else 
+        {
+
+            $result = DB::connection("sqlsrv3")
+                    ->select(DB::raw("select LTRIM(RTRIM(dept_id)) as dept_id, LTRIM(RTRIM(descr)) as descr from depart"));
+
+            return response()->json($result);
+
+
+        }
+
+
+    }
+
+    public function listPICDept($id, $pic){
+
+        if ($id == "SR") {
+
+            $result = DB::connection("sqlsrv2")
+                    ->select(DB::raw("select LTRIM(RTRIM(a.dept_id)) as dept_id, LTRIM(RTRIM(a.descr)) as descr
+                    from depart a
+                    inner join pic_dept b on a.dept_id = b.dept_id
+                    where b.pic_id = '$pic'"));
+
+            return response()->json($result);
+
+        }
+
+        else 
+        {
+
+            $result = DB::connection("sqlsrv3")
+                    ->select(DB::raw("select LTRIM(RTRIM(a.dept_id)) as dept_id, LTRIM(RTRIM(a.descr)) as descr
+                    from depart a
+                    inner join pic_dept b on a.dept_id = b.dept_id
+                    where b.pic_id = '$pic'"));
+
+            return response()->json($result);
+
+
+        }
+
+
+    }
+
+    public function listDeptPIC($id, $pic){
+
+        if ($id == "SR") {
+
+            $result = DB::connection("sqlsrv2")
+                    ->select(DB::raw("select LTRIM(RTRIM(a.pic_id)) as pic_id, LTRIM(RTRIM(a.pic_name)) as pic_name
+                    from pic_dept a
+                    inner join depart b on a.dept_id = b.dept_id
+                    where b.dept_id = '$pic'"));
+
+            return response()->json($result);
+
+        }
+
+        else 
+        {
+
+            $result = DB::connection("sqlsrv2")
+                    ->select(DB::raw("select LTRIM(RTRIM(a.pic_id)) as pic_id, LTRIM(RTRIM(a.pic_name)) as pic_name
+                    from pic_dept a
+                    inner join depart b on a.dept_id = b.dept_id
+                    where b.dept_id = '$pic'"));
+
+            return response()->json($result);
+
+
+        }
+
+
+    }
 }

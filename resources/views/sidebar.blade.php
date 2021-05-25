@@ -198,6 +198,26 @@
                 </ul>
             </div>
         </li>
+
+        <li id="FinAnalysis" class="bold">
+            <a class="collapsible-header waves-effect waves-cyan" href="javascript:void(0)">
+                <i class="material-icons">insert_chart</i>
+                <span class="menu-title">Finance Analysis</span>
+            </a>
+            <div class="collapsible-body" id="FinAnalysisCSS">
+                <ul class="collapsible collapsible-sub FinAnalysisTree" data-collapsible="accordion">
+                    @if(session()->has('mnuPurchasingAnalysis') or Session::get('FIN_REPORT') == 'Y')
+                    <li>
+                        <a href="{{ url('PurchasingAnalysis') }}" id="PurchasingAnalysis">
+                            <i class="material-icons">radio_button_unchecked</i>
+                            <span>Purchasing Analysis</span>
+                        </a>
+                    </li>
+                    @endif
+                </ul>
+            </div>
+        </li>
+
         <li id="Purchase" class="bold">
             <a class="collapsible-header waves-effect waves-cyan" href="javascript:void(0)">
                 <i class="material-icons">playlist_add_check</i>

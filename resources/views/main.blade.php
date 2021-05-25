@@ -341,6 +341,16 @@ $(document).ready(function() {
         }
     });
 
+    $(".FinAnalysisTree").each(function(index){
+        if(!$(this).find("li").length){
+            var Report = document.getElementById('FinAnalysis');
+            var ReportCSS = document.getElementById('FinAnalysisCSS');
+            FinAnalysis.style.display = 'none';
+            FinAnalysisCSS.style.display = 'none';
+            FinanceHeader.style.display = 'none';
+        }
+    });
+
     $(".PreOrderTree").each(function(index){
         if(!$(this).find("li").length){
             var PreOrder = document.getElementById('PreOrder');

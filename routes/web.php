@@ -144,6 +144,12 @@ Route::get('listCoilOrigin', 'JSONController@listCoilOrigin');
 Route::get('listCrcCommodity', 'JSONController@listCrcCommodity');
 Route::get('listCrcThickness', 'JSONController@listCrcThickness');
 Route::get('listCrcWidth', 'JSONController@listCrcWidth');
+Route::get('listPIC/id={id}', 'JSONController@listPIC');
+Route::get('listDept/id={id}', 'JSONController@listDept');
+Route::get('listPICDept/id={id}&pic={pic}', 'JSONController@listPICDept');
+Route::get('listDeptPIC/id={id}&pic={pic}', 'JSONController@listDeptPIC');
+
+
 
 //-- Report - Purchase Order
 Route::get('POReport', 'POReportController@index')->name('POReport');
@@ -189,7 +195,6 @@ Route::get('BlockSchedule', 'BlockScheduleController@index')->name('BlockSchedul
 
 //-- MPF 
 
-
 Route::get('CreateMPF', 'CreateMPFController@index')->name('CreateMPF');
 Route::get('needOrderID', 'CreateMPFController@needOrderID');
 Route::get('fillReceiver', 'CreateMPFController@fillReceiver');
@@ -205,6 +210,12 @@ Route::post('rejectApproval', 'ListMPFController@rejectApproval')->name('rejectA
 
 Route::get('CcBccMPF', 'CcBccMPFController@index')->name('CcBccMPF');
 Route::post('getListCcMPF', 'CcBccMPFController@getListCcMPF')->name('getListCcMPF');
+
+
+// Purchasing Analysis
+Route::get('PurchasingAnalysis', 'PurchasingAnalysisController@index')->name('PurchasingAnalysis');
+Route::post('chartPurchasingAnalysis', 'PurchasingAnalysisController@chartPurchasingAnalysis')->name('chartPurchasingAnalysis');
+Route::post('getPurchasingAnalysisDetail', 'PurchasingAnalysisController@getPurchasingAnalysisDetail')->name('getPurchasingAnalysisDetail');
 
 
 
