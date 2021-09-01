@@ -295,113 +295,107 @@ $(document).ready(function() {
     var SalesMarketingHeader = document.getElementById('SalesMarketingHeader');
     var FinanceHeader = document.getElementById('FinanceHeader');
     var EApprovalHeader = document.getElementById('EApprovalHeader');
+    var UsrManageTreeHeader = document.getElementById('UsrManageTreeHeader');
 
+    var SalesMarketing = 0;
+    var MillProduction = 0;
+    var Finance = 0;
+    var UsrManage = 0;
+    var EApproval = 0
 
-
+    // SalesMarketing
     $(".SalesDataAnalysisTree").each(function(index){
         if(!$(this).find("li").length){
             var SalesDataAnalysis = document.getElementById('SalesDataAnalysis');
-            var SalesDataAnalysisCSS = document.getElementById('SalesDataAnalysisCSS');
             SalesDataAnalysis.style.display = 'none';
-            SalesDataAnalysisCSS.style.display = 'none';
-            SalesMarketingHeader.style.display = 'none';
-        }
-    });
-
-    $(".ProductionReportTree").each(function(index){
-        if(!$(this).find("li").length){
-            var ProductionReport = document.getElementById('ProductionReport');
-            var ProductionReportCSS = document.getElementById('ProductionReportCSS');
-            ProductionReport.style.display = 'none';
-            ProductionReportCSS.style.display = 'none';
-            MillProductionHeader.style.display = 'none';
-        
-        }
-        
-    });
-
-
-    $(".SunriseSystemTree").each(function(index){
-        if(!$(this).find("li").length){
-            var SunriseSystem = document.getElementById('SunriseSystem');
-            var SunriseSystemCSS = document.getElementById('SunriseSystemCSS');
-            SunriseSystem.style.display = 'none';
-            SunriseSystemCSS.style.display = 'none';
-            MillProductionHeader.style.display = 'none';
-        }
-    });
-
-    $(".ReportTree").each(function(index){
-        if(!$(this).find("li").length){
-            var Report = document.getElementById('Report');
-            var ReportCSS = document.getElementById('ReportCSS');
-            Report.style.display = 'none';
-            ReportCSS.style.display = 'none';
-            FinanceHeader.style.display = 'none';
-        }
-    });
-
-    $(".FinAnalysisTree").each(function(index){
-        if(!$(this).find("li").length){
-            var Report = document.getElementById('FinAnalysis');
-            var ReportCSS = document.getElementById('FinAnalysisCSS');
-            FinAnalysis.style.display = 'none';
-            FinAnalysisCSS.style.display = 'none';
-            FinanceHeader.style.display = 'none';
-        }
-    });
-
-    $(".PreOrderTree").each(function(index){
-        if(!$(this).find("li").length){
-            var PreOrder = document.getElementById('PreOrder');
-            // var PreOrderHeader = document.getElementById('PreOrderHeader');
-            var PreOrderCSS = document.getElementById('PreOrderCSS');
-            PreOrder.style.display = 'none';
-            // PreOrderHeader.style.display = 'none';
-            PreOrderCSS.style.display = 'none';
-        }
-    });
-
-    $(".PurchaseTree").each(function(index){
-        if(!$(this).find("li").length){
-            var Purchase = document.getElementById('Purchase');
-            var PurchaseCSS = document.getElementById('PurchaseCSS');
-            Purchase.style.display = 'none';
-            PurchaseCSS.style.display = 'none';
-            FinanceHeader.style.display = 'none';
+            SalesMarketing = SalesMarketing + 1 
         }
     });
 
     $(".SalesActivityTree").each(function(index){
         if(!$(this).find("li").length){
             var SalesActivity = document.getElementById('SalesActivity');
-            var SalesActivityCSS = document.getElementById('SalesActivityCSS');
             SalesActivity.style.display = 'none';
-            SalesActivityCSS.style.display = 'none';
-            SalesMarketingHeader.style.display = 'none';
+            SalesMarketing = SalesMarketing + 1         
         }
     });
 
+    if (SalesMarketing > 1) {
+        SalesMarketingHeader.style.display = 'none';
+    }
+
+    
+    // MillProduction
+    $(".ProductionReportTree").each(function(index){
+        if(!$(this).find("li").length){
+            var ProductionReport = document.getElementById('ProductionReport');
+            ProductionReport.style.display = 'none';
+            MillProduction = MillProduction + 1;
+        }    
+    });
+    $(".SunriseSystemTree").each(function(index){
+        if(!$(this).find("li").length){
+            var SunriseSystem = document.getElementById('SunriseSystem');
+            SunriseSystem.style.display = 'none';
+            MillProduction = MillProduction + 1;
+        }
+    });
+    if (MillProduction > 1) {
+        MillProductionHeader.style.display = 'none';
+    }
+
+
+    // Finance
+    $(".ReportTree").each(function(index){
+        if(!$(this).find("li").length){
+            var Report = document.getElementById('Report');
+            Report.style.display = 'none';
+            Finance = Finance + 1 
+        }
+    });
+
+    $(".FinAnalysisTree").each(function(index){
+        if(!$(this).find("li").length){
+            var FinAnalysis = document.getElementById('FinAnalysis');
+            FinAnalysis.style.display = 'none';
+            Finance = Finance + 1 ;
+        }
+    });
+
+    $(".PurchaseTree").each(function(index){
+        if(!$(this).find("li").length){
+            var Purchase = document.getElementById('Purchase');
+            Purchase.style.display = 'none';
+            Finance = Finance + 1 ;
+        }
+    });
+    if (Finance > 2) {
+        FinanceHeader.style.display = 'none';
+    }
+
+   // UsrManage
     $(".UsrManageTree").each(function(index){
         if(!$(this).find("li").length){
-            var UsrManageTree = document.getElementById('UsrManageTree');
-            var UsrManageTreeHeader = document.getElementById('UsrManageTreeHeader');
-            var UsrManageCSS = document.getElementById('UsrManageCSS');
-            UsrManageTree.style.display = 'none';
-            UsrManageTreeHeader.style.display = 'none';
-            UsrManageCSS.style.display = 'none';
+            var UsrManageID = document.getElementById('UsrManage');
+            UsrManageID.style.display = 'none';
+            UsrManage = UsrManage + 1 ;
         }
     });
+    if (UsrManage > 0) {
+        UsrManageTreeHeader.style.display = 'none';
+    }
 
+    // EApproval
     $(".MPFTree").each(function(index){
         if(!$(this).find("li").length){
-            var MPFTree = document.getElementById('MPFTree');
-            var mpfcss = document.getElementById('MPFCSS');
-            MPFTree.style.display = 'none';
-            mpfcss.style.display = 'none';
-            EApprovalHeader.style.display = 'none';
+            var mpf = document.getElementById('MPF');
+            mpf.style.display = 'none';
+            EApproval = EApproval + 1 ;
         }
     });
+    if (EApproval > 0) {
+        EApprovalHeader.style.display = 'none';
+    }
 
 });
 

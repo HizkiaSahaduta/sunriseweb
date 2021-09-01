@@ -181,8 +181,8 @@
                         <div class="input-field col s12">
                             <i class="material-icons prefix">line_weight</i>
                             <input type="text" name="txtOrderId" id="txtOrderId" placeholder="OrderID goes here" disabled>
-                            <label>OrderID: </label>
-                            <button class="btn btn-small amber lighten-2" id="checkOrderID" style="margin-left: 43px">Check
+                            <label>SC Number: </label>
+                            <button class="btn btn-small amber lighten-2 modal-trigger detailMPF" data-target="detailScNumber" id="checkOrderID" style="margin-left: 43px" >Check
                                 <i class="material-icons right">check</i>
                             </button>
                             
@@ -226,6 +226,26 @@
    </div>
 
 
+</div>
+
+<div id="detailScNumber" class="modal">
+	<div class="modal-content">
+        <a href="javascript:void(0)" class="modal-action modal-close" style="float: right">
+            <i class="material-icons">close</i>
+        </a>
+        <div id="headerModal"></div>
+        <div class="row">
+                <div class="row">
+                    <div class="col m12 s12">
+                        <div id="contentModal"></div>
+                    </div>      
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Close</a>
+      </div>
+    </div>
 </div>
 <!-- END: Page Main-->
 
@@ -274,7 +294,9 @@ $(document).ready(function() {
     $('#MPFCSS').css('display','block');
     $('#CreateMPF').addClass('active gradient-45deg-green-teal gradient-shadow');
 
-    $("#checkOrderID").hide();
+    // $("#checkOrderID").hide();
+
+    $(".modal").modal();
 
     $('#txtCategory').select2({
         placeholder: "Choose Subject",
@@ -320,6 +342,7 @@ $(document).ready(function() {
                 success:function(data) {
                     
                     if(data == 'Y'){
+
                         $("#checkOrderID").show();
                         $("#txtOrderId").prop( "disabled", false );
                         $("#checkOrderID").prop( "disabled", false );
@@ -436,6 +459,42 @@ $(document).ready(function() {
       
         
     });
+
+    
+	$("#checkOrderID").click(function () {
+
+		blockUI();
+        var id = $("#txtOrderId").val();
+
+		$.ajax({
+			url: 'checkOrder',
+			type: "POST",
+			dataType: "json",
+			data: {
+                '_token': '{{ csrf_token() }}',
+				'id':id
+			},
+			success:function(data) {
+				
+				if(data['html'].length != 0){
+
+                    var title = 'Detail of '+id;
+
+					$('#headerModal').html(title);
+                    $('#contentModal').html(data['html']);
+                    $.unblockUI();
+				}
+				else{
+                    $.unblockUI();
+					swal("Alert", "Data not found, please check again", "warning");
+				}
+				
+			}
+		});
+
+		
+
+	});
 
 
 });

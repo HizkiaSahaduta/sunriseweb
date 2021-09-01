@@ -235,7 +235,7 @@
         </div>
     </div>
     <div class="modal-footer" id="modalFooter">
-        <button class="btn waves-effect waves-light blue darken-1" id="accept">Accept</button>
+        <button class="btn waves-effect waves-light blue darken-1" id="accept">Approve</button>
         <button class="btn waves-effect waves-light red darken-1" id="reject">Reject</button>
         </div>
     </div>
@@ -295,7 +295,7 @@ function getListMPF(){
         serverSide: true,
         autoWidth: false,
         ajax: {
-            'url':'{!!url("getListCcMPF")!!}',
+            'url':'{!!url("getListMPF")!!}',
             'type': 'post',
             data: {
                     '_token': '{{ csrf_token() }}'

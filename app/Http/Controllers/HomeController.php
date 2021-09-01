@@ -31,8 +31,20 @@ class HomeController extends Controller
 
     public function index()
     {
+        $groupid = Session::get('GROUPID');
+
+        if ($groupid == 'KKA') {
+
+            return view('layouts.home3');
+
+        }
+        else {
+
+            return view('layouts.home');
+
+        }
         
-        return view('layouts.home');
+       
     }
 
     public function getDashboard() {

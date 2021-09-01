@@ -36,7 +36,8 @@ class CcBccMPFController extends Controller
                 (select b.*, c.descr from mpf_cc as a
                 inner join mpf_data as b on a.mpf_id = b.mpf_id
                 inner join mpf_target as c on c.target_id = a.target_id
-                where c.descr = '$groupid') as x
+                inner join mpf_target_user as d on c.target_id = d.target_id
+                where d.user_target = '$userid') as x
                 inner join mpf_category as y on x.cat_id = y.cat_id"));
 
         return \DataTables::of($data)

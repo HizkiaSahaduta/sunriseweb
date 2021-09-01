@@ -10,34 +10,37 @@
         </h1>
     </div>
     <ul class="sidenav sidenav-collapsible leftside-navigation collapsible sidenav-fixed menu-shadow" id="slide-out" data-menu="menu-navigation" data-collapsible="menu-accordion">
-        <li class="bold" id="Dashboard">
-            <a class="collapsible-header waves-effect waves-cyan" href="javascript:void(0)">
-                <i class="material-icons">dashboard</i>
-                <span class="menu-title">Dashboard</span>
-            </a>
-            <div class="collapsible-body" id="DashboardCSS">
-                <ul class="collapsible collapsible-sub DashboardTree" data-collapsible="accordion">
-                    <li>
-                        <a href="{{ url('home') }}" id="LiveDataProd">
-                            <i class="material-icons">radio_button_unchecked</i>
-                            <span>Live Data Production</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ url('home2') }}" id="ProdSum">
-                            <i class="material-icons">radio_button_unchecked</i>
-                            <span>Production Summary</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ url('BlockSchedule') }}" id="BlockSchedule">
-                            <i class="material-icons">radio_button_unchecked</i>
-                            <span>Block Schedule</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </li>
+        
+        @if ( Session::get('GROUPID') != 'KKA')
+            <li class="bold" id="Dashboard">
+                <a class="collapsible-header waves-effect waves-cyan" href="javascript:void(0)">
+                    <i class="material-icons">dashboard</i>
+                    <span class="menu-title">Dashboard</span>
+                </a>
+                <div class="collapsible-body" id="DashboardCSS">
+                    <ul class="collapsible collapsible-sub DashboardTree" data-collapsible="accordion">
+                        <li>
+                            <a href="{{ url('home') }}" id="LiveDataProd">
+                                <i class="material-icons">radio_button_unchecked</i>
+                                <span>Live Data Production</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url('home2') }}" id="ProdSum">
+                                <i class="material-icons">radio_button_unchecked</i>
+                                <span>Production Summary</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url('BlockSchedule') }}" id="BlockSchedule">
+                                <i class="material-icons">radio_button_unchecked</i>
+                                <span>Block Schedule</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        @endif
 
         <li class="navigation-header" id="MillProductionHeader">
             <a class="navigation-header-text">Mill Production</a>
@@ -57,15 +60,6 @@
                         </a>
                     </li>
                     @endif
-
-                    {{-- @if(session()->has('mnuProdAnalysis')) --}}
-                    {{-- <li>
-                        <a href="{{ url('BlockSchedule') }}" id="BlockSchedule">
-                            <i class="material-icons">radio_button_unchecked</i>
-                            <span>Block Schedule</span>
-                        </a>
-                    </li> --}}
-                    {{-- @endif --}}
                 </ul>
             </div>
         </li>
@@ -93,6 +87,16 @@
                         </a>
                     </li>
                     @endif
+
+                    @if(session()->has('mnuOrderReport'))
+                    <li>
+                        <a href="{{ url('OrderReport') }}" id="OrderReport">
+                            <i class="material-icons">radio_button_unchecked</i>
+                            <span>Sales Contract Report</span>
+                        </a>
+                    </li>
+                    @endif
+
                 </ul>
             </div>
         </li>
@@ -237,72 +241,50 @@
             </div>
         </li>
 
-        <li class="navigation-header" id="EApprovalHeader">
-            <a class="navigation-header-text">E-Approval</a>
-        </li>
-        <li id="MPF" class="bold">
-            <a class="collapsible-header waves-effect waves-cyan" href="javascript:void(0)">
-                <i class="material-icons">format_list_bulleted</i>
-                <span class="menu-title">Multi-Purpose Form</span>
-            </a>
-            <div class="collapsible-body" id="MPFCSS">
-                <ul class="collapsible collapsible-sub MPFTree" data-collapsible="accordion">
-                   
-                    <li>
-                        <a href="{{ url('CreateMPF') }}" id="CreateMPF">
-                            <i class="material-icons">radio_button_unchecked</i>
-                            <span>Create MPF</span>
-                        </a>
-                    </li>
-                   
-                    <li>
-                        <a href="{{ url('ListMPF') }}" id="ListMPF">
-                            <i class="material-icons">radio_button_unchecked</i>
-                            <span>MPF List</span>
-                        </a>
-                    </li>
-                   
-                    <li>
-                        <a href="{{ url('CcBccMPF') }}" id="CcMPF">
-                            <i class="material-icons">radio_button_unchecked</i>
-                            <span>MPF Cc/Bcc</span>
-                        </a>
-                    </li> 
-                </ul>
-            </div>
-        </li>
+        @if ( Session::get('GROUPID') != 'KKA')
+
+            <li class="navigation-header" id="EApprovalHeader">
+                <a class="navigation-header-text">E-Approval</a>
+            </li>
+            <li id="MPF" class="bold">
+                <a class="collapsible-header waves-effect waves-cyan" href="javascript:void(0)">
+                    <i class="material-icons">format_list_bulleted</i>
+                    <span class="menu-title">Multi-Purpose Form</span>
+                </a>
+                <div class="collapsible-body" id="MPFCSS">
+                    <ul class="collapsible collapsible-sub MPFTree" data-collapsible="accordion">
+                    
+                        @if(session()->has('mnuCreateMPF'))
+                        <li>
+                            <a href="{{ url('CreateMPF') }}" id="CreateMPF">
+                                <i class="material-icons">radio_button_unchecked</i>
+                                <span>Create MPF</span>
+                            </a>
+                        </li>
+                        @endif
+                    
+                        @if(session()->has('mnuListMPF'))
+                        <li>
+                            <a href="{{ url('ListMPF') }}" id="ListMPF">
+                                <i class="material-icons">radio_button_unchecked</i>
+                                <span>MPF List</span>
+                            </a>
+                        </li>
+                        @endif
+                    
+                        @if(session()->has('mnuCcBccMPF'))
+                        <li>
+                            <a href="{{ url('CcBccMPF') }}" id="CcMPF">
+                                <i class="material-icons">radio_button_unchecked</i>
+                                <span>MPF Cc/Bcc</span>
+                            </a>
+                        </li> 
+                        @endif
+                    </ul>
+                </div>
+            </li>
+        @endif
         
-
-        {{-- <li class="navigation-header" id="PreOrderHeader">
-            <a class="navigation-header-text">Sales Order</a>
-        </li>
-        <li id="PreOrder" class="bold">
-            <a class="collapsible-header waves-effect waves-cyan" href="javascript:void(0)">
-                <i class="material-icons">add_shopping_cart</i>
-                <span class="menu-title">Pre order</span>
-            </a>
-            <div class="collapsible-body" id="PreOrderCSS">
-                <ul class="collapsible collapsible-sub PreOrderTree" data-collapsible="accordion" >
-                    @if(session()->has('mnuCreateOrder'))
-                    <li>
-                        <a href="{{ url('CreatePreOrder') }}" id="CreatePreOrder">
-                            <i class="material-icons">radio_button_unchecked</i>
-                            <span id="PreOrderSpan">Create Pre Order</span>
-                        </a>
-                    </li>
-                    @endif
-                    @if(session()->has('mnuListOrder'))
-                    <li>
-                        <a href="{{ url('ListPreOrder') }}" id="ListPreOrder">
-                            <i class="material-icons">radio_button_unchecked</i>
-                            <span id="ListPreOrderSpan">List PreOrder</span>
-                        </a>
-                    </li>
-                    @endif
-                </ul>
-            </div>
-        </li> --}}
-
        
 
         <li class="navigation-header" id="UsrManageHeader">

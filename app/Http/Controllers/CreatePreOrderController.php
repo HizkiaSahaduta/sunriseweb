@@ -83,6 +83,7 @@ class CreatePreOrderController extends Controller
         }
     }
 
+    
     public function order_autocompletecustomer(Request $request){
         $search = $request->get('term');
 

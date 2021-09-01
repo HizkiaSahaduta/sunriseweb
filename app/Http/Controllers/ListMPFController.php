@@ -30,6 +30,9 @@ class ListMPFController extends Controller
         $groupid = Session::get('GROUPID');
         $officeid = Session::get('OFFICEID');
         $region = Session::get('REGIONID');
+        
+
+        // echo $groupid;
 
         if ($groupid == 'SALES'){
             
@@ -95,13 +98,21 @@ class ListMPFController extends Controller
 
         else {
 
-            $data = DB::connection('sqlsrv2')
-                        ->table('mpf_data as a')
-                        ->select('a.*', 'b.cat_desc')
-                        ->join('mpf_category as b', 'b.cat_id', '=', 'a.cat_id')
-                        ->where('a.target_id', '=', $groupid)
-                        ->orderBy('a.tr_date', 'desc')
-                        ->get();
+            // $data = DB::connection('sqlsrv2')
+            //             ->table('mpf_data as a')
+            //             ->select('a.*', 'b.cat_desc')
+            //             ->join('mpf_category as b', 'b.cat_id', '=', 'a.cat_id')
+            //             ->where('a.target_id', '=', $groupid)
+            //             ->orderBy('a.tr_date', 'desc')
+            //             ->get();
+
+            
+            $data = DB::connection("sqlsrv2")
+                    ->select(DB::raw("select a.*, b.cat_desc from mpf_data a
+                    inner join mpf_category b on a.cat_id = b.cat_id
+                    inner join mpf_target c on a.target_id = c.descr
+                    inner join mpf_target_user d on c.target_id = d.target_id
+                    where d.user_target = '$userid'"));
 
             return \DataTables::of($data)
             ->editColumn('tr_date', function ($data) {
