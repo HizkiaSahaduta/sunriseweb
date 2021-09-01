@@ -150,7 +150,6 @@ Route::get('listPICDept/id={id}&pic={pic}', 'JSONController@listPICDept');
 Route::get('listDeptPIC/id={id}&pic={pic}', 'JSONController@listDeptPIC');
 
 
-
 //-- Report - Purchase Order
 Route::get('POReport', 'POReportController@index')->name('POReport');
 Route::post('getPOReport', 'POReportController@getPOReport');
@@ -207,7 +206,6 @@ Route::post('detailMPF', 'ListMPFController@detailMPF')->name('detailMPF');
 Route::post('acceptApproval', 'ListMPFController@acceptApproval')->name('acceptApproval');
 Route::post('rejectApproval', 'ListMPFController@rejectApproval')->name('rejectApproval');
 
-
 Route::get('CcBccMPF', 'CcBccMPFController@index')->name('CcBccMPF');
 Route::post('getListCcMPF', 'CcBccMPFController@getListCcMPF')->name('getListCcMPF');
 
@@ -217,6 +215,14 @@ Route::get('PurchasingAnalysis', 'PurchasingAnalysisController@index')->name('Pu
 Route::post('chartPurchasingAnalysis', 'PurchasingAnalysisController@chartPurchasingAnalysis')->name('chartPurchasingAnalysis');
 Route::post('getPurchasingAnalysisDetail', 'PurchasingAnalysisController@getPurchasingAnalysisDetail')->name('getPurchasingAnalysisDetail');
 
+
+// Order Report
+Route::get('OrderReport', 'OrderReportController@index')->name('OrderReport');
+Route::get('getAllSalesContract', 'JSONController@getAllSalesContract')->name('getAllSalesContract');
+Route::post('getSalesContract', 'JSONController@getSalesContract')->name('getSalesContract');
+Route::post('getCustomer2', 'JSONController@getCustomer2')->name('getCustomer2');
+Route::post('getOrderReport', 'OrderReportController@getOrderReport')->name('getOrderReport');
+Route::post('getOrderReportDetail', 'OrderReportController@getOrderReportDetail')->name('getOrderReportDetail');
 
 
 

@@ -85,6 +85,9 @@ class CreateMPFController extends Controller
         $userid = Session::get('USERNAME');
         $salesid = Session::get('SALESID');
         $officeid = Session::get('OFFICEID');
+        if (!$officeid) {
+            $officeid = 1;
+        }
         $currDate = date("mY", strtotime("0 month,0 year"));
 
         $txtCategory = $request->txtCategory;
@@ -126,7 +129,6 @@ class CreateMPFController extends Controller
                 $txtPhotoName = '';
             }
 
-
             $saveApproval = DB::connection("sqlsrv2")
                                 ->table('mpf_data')
                                 ->insert([
@@ -154,33 +156,88 @@ class CreateMPFController extends Controller
     public function checkOrder(Request $request){
 
         $id = $request->id;
+        $html = '';
 
-        if(substr($id, 0, 1) == 1){
+        $result = DB::connection('sqlsrv2')
+                    ->select(DB::raw("select ltrim(rtrim(salesman_name)) as salesman_name, 
+                    ltrim(rtrim(cust_name)) as cust_name, stat, 
+                    convert(varchar(10), dt_order, 120) as dt_order,
+                    convert(varchar(10), dt_close, 120) as dt_close, after_close, ppp
+                    from view_sc_preorder where order_id = '$id'"));
 
-            $result = DB::connection('sqlsrv2')
-                        ->table('CustomerOrder as a')
-                        ->join('Customer as b', 'b.CustomerId', '=', 'a.CustomerId')
-                        ->join('Sales as c', 'c.SalesId', '=', 'a.SalesId')
-                        ->select('c.NamaSales', 'b.NamaCustomer', 'b.Alamat', 'b.Kota')
-                        ->where('a.CustomerOrderNo', '=', $id)
-                        ->get();
+        foreach ($result as $result) {
 
-            return response()->json($result);
+            $html .= '
+            <div class="divider show-on-small hide-on-med-and-up mb-3"></div>
+            <h6>Sales Person: '.$result->salesman_name.'</h6>
+            <h6>Customer: '.$result->cust_name.'</h6>
+            <h6>Status: '.$result->stat.'</h6>
+            <h6>Sc.Date: '.$result->dt_order.'</h6>
+            <h6>Closed.Date: '.$result->dt_close.'</h6>';
+            
+            if($result->after_close >= 0 && $result->after_close <= 7) {
+
+                $html .= '
+                <h6 class="text-danger">WillBeClosed: '.$result->after_close.' days</h6>';
+
+            }
+
+            elseif($result->after_close >= 0 && $result->stat == 'C') {
+
+                $html .= '
+                <h6 class="text-warning">WillBeClosed: '.$result->after_close.' days</h6>';
+
+            }
+
+            elseif($result->after_close >= 0 && $result->stat == 'O') {
+
+                $html .= '
+                <h6 class="text-success">WillBeClosed: '.$result->after_close.' days</h6>';
+
+            }
+
+            elseif($result->after_close >= 0 && $result->stat == 'R') {
+
+                $html .= '
+                <h6 class="text-success">WillBeClosed: '.$result->after_close.' days</h6>';
+
+            }
+
+            elseif($result->after_close >= 0 && $result->stat == 'X') {
+
+                $html .= '
+                <h6 class="text-danger">WillBeClosed: '.$result->after_close.' days</h6>';
+
+            }
+
+            else {
+
+                $html .= '
+                <h6 class="text-black">WillBeClosed: '.$result->after_close.' days</h6>';
+
+            }
+
+            if($result->ppp > 0) {
+
+                $html .= '
+                <h6 class="text-success">PPP: Yes</h6>';
+
+            }
+
+            if($result->ppp <= 0) {
+
+                $html .= '
+                <h6 class="text-danger">PPP: No</h6>';
+
+            }
+
+
 
         }
-        else{
 
-            $result = DB::connection('sqlsrv2')
-                        ->table('Penjualan as a')
-                        ->join('Customer as b', 'b.CustomerId', '=', 'a.CustomerId')
-                        ->join('Sales as c', 'c.SalesId', '=', 'a.SalesId')
-                        ->select('c.NamaSales', 'b.NamaCustomer', 'b.Alamat', 'b.Kota')
-                        ->where('a.PenjualanNO', '=', $id)
-                        ->get();
 
-            return response()->json($result);
+        return response()->json(['html' => $html]);
 
-        }
 
     }
 

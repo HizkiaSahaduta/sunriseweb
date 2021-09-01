@@ -60,8 +60,7 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
-        if(Auth::attempt(['username' => $request->username, 'password' => $request->password]))
-        {
+        if(Auth::attempt(['username' => $request->username, 'password' => $request->password])){
             $userStatus = Auth::User()->active_flag;
             $passCheck = Auth::User()->password;
 
@@ -73,22 +72,7 @@ class LoginController extends Controller
             // }
             // else
             // {
-                if($userStatus == 'Y')
-                {
-                    $datetime = Carbon::now();
-                    $updateLastActive = DB::table('sec_user')
-                                        ->where('username', '=', Auth::User()->username)
-                                        ->update(['last_active' => $datetime]);
-
-                    /* $clientIP = $_SERVER['REMOTE_ADDR']; */
-                    $clientIP = request()->ip();
-
-                    $salesid = DB::table('sec_env_conf')
-                                ->select('var_value')
-                                ->where('appl_id','=', 'SUNRISEWEB')
-                                ->where('var_id', '=', 'SALESID')
-                                ->where('user_id2', '=', Auth::User()->username)
-                                ->Value('var_value');
+                if($userStatus == 'Y'){
 
                     $groupid = DB::table('sec_group')
                                 ->select('group_id')
@@ -96,123 +80,147 @@ class LoginController extends Controller
                                 ->Where('user_id2', '=', Auth::User()->username)
                                 ->Value('group_id');
 
-                    $officeid = DB::table('sec_env_conf')
-                                ->select('var_value')
-                                ->where('appl_id','=', 'SUNRISEWEB')
-                                ->where('var_id', '=', 'OFFICEID')
-                                ->Where('user_id2', '=', Auth::User()->username)
-                                ->Value('var_value');
+                    if (!$groupid) {
 
-                    $officename = DB::connection("sqlsrv2")
-                                    ->table('branch_office')
-                                    ->select('office')
-                                    ->where('office_id','=', $officeid)
-                                    ->Value('office');
+                        Auth::logout();
+                        Session::flush();
+                        return redirect(url('login'))->withInput()->with('alert','You are not part of us');
 
-                    $name1 = DB::table('sec_user')
-                                ->select('name1')
-                                ->Where('user_id2', '=', Auth::User()->username)
-                                ->Value('name1');
+                    } 
+                    
+                    else {
 
-                    $name2 = DB::table('sec_user')
-                                ->select('name2')
-                                ->Where('user_id2', '=', Auth::User()->username)
-                                ->Value('name2');
+                        $datetime = Carbon::now();
+                        $updateLastActive = DB::table('sec_user')
+                                            ->where('username', '=', Auth::User()->username)
+                                            ->update(['last_active' => $datetime]);
 
-                    $name3 = DB::table('sec_user')
-                                ->select('name3')
-                                ->Where('user_id2', '=', Auth::User()->username)
-                                ->Value('name3');
+                        /* $clientIP = $_SERVER['REMOTE_ADDR']; */
+                        $clientIP = request()->ip();
 
-                    $getEnvMnu = DB::table('sec_right')
-                                ->select('menu_id')
-                                ->where('appl_id','=', 'SUNRISEWEB')
-                                ->where('group_id','=', $groupid)
-                                ->where('active_flag','=', 'Y')
-                                ->get();
-
-                    $getEnvID = DB::table('sec_env_var')
-                                ->select('var_id')
-                                ->where('appl_id','=', 'SUNRISEWEB')
-                                ->where('active_flag','=', 'Y')
-                                ->get();
-
-                    // dd($getEnvID);
-
-                    // $rm = DB::connection("sqlsrv2")
-                    //         ->table('branch_office')
-                    //         ->select('region')
-                    //         ->distinct()
-                    //         ->where('rm','=', $salesid)
-                    //         ->Value('region');   
-                            
-                    // if($rm){
-                    //     Session::put('REGIONID', $rm);
-                    // }
-
-                    foreach($getEnvID as $getEnvID) {
-
-                        $getVarValue1 = DB::table('sec_env_conf')
+                        $salesid = DB::table('sec_env_conf')
                                     ->select('var_value')
                                     ->where('appl_id','=', 'SUNRISEWEB')
-                                    ->where('var_id','=', $getEnvID->var_id)
-                                    ->where('active_flag','=', 'Y')
+                                    ->where('var_id', '=', 'SALESID')
+                                    ->where('user_id2', '=', Auth::User()->username)
                                     ->Value('var_value');
 
-                        Session::put( $getEnvID->var_id, $getVarValue1);
-
-
-                        $getVarValue2 = DB::table('sec_env_conf')
+                        $officeid = DB::table('sec_env_conf')
                                     ->select('var_value')
+                                    ->where('appl_id','=', 'SUNRISEWEB')
+                                    ->where('var_id', '=', 'OFFICEID')
+                                    ->Where('user_id2', '=', Auth::User()->username)
+                                    ->Value('var_value');
+
+                        $officename = DB::connection("sqlsrv2")
+                                        ->table('branch_office')
+                                        ->select('office')
+                                        ->where('office_id','=', $officeid)
+                                        ->Value('office');
+
+                        $name1 = DB::table('sec_user')
+                                    ->select('name1')
+                                    ->Where('user_id2', '=', Auth::User()->username)
+                                    ->Value('name1');
+
+                        $name2 = DB::table('sec_user')
+                                    ->select('name2')
+                                    ->Where('user_id2', '=', Auth::User()->username)
+                                    ->Value('name2');
+
+                        $name3 = DB::table('sec_user')
+                                    ->select('name3')
+                                    ->Where('user_id2', '=', Auth::User()->username)
+                                    ->Value('name3');
+
+                        $getEnvMnu = DB::table('sec_right')
+                                    ->select('menu_id')
                                     ->where('appl_id','=', 'SUNRISEWEB')
                                     ->where('group_id','=', $groupid)
-                                    ->where('var_id','=', $getEnvID->var_id)
                                     ->where('active_flag','=', 'Y')
-                                    ->Value('var_value');
+                                    ->get();
 
-                        Session::put( $getEnvID->var_id, $getVarValue2);
-
-
-                        $getVarValue3 = DB::table('sec_env_conf')
-                                    ->select('var_value')
+                        $getEnvID = DB::table('sec_env_var')
+                                    ->select('var_id')
                                     ->where('appl_id','=', 'SUNRISEWEB')
-                                    ->Where('user_id2', '=', Auth::User()->username)
-                                    ->where('var_id','=', $getEnvID->var_id)
                                     ->where('active_flag','=', 'Y')
-                                    ->Value('var_value');
+                                    ->get();
 
-                        Session::put( $getEnvID->var_id, $getVarValue3);
+                        // dd($getEnvID);
 
-                    }
+                        // $rm = DB::connection("sqlsrv2")
+                        //         ->table('branch_office')
+                        //         ->select('region')
+                        //         ->distinct()
+                        //         ->where('rm','=', $salesid)
+                        //         ->Value('region');   
+                                
+                        // if($rm){
+                        //     Session::put('REGIONID', $rm);
+                        // }
 
-                    foreach($getEnvMnu as $getEnvMnu) {
-                        Session::put($getEnvMnu->menu_id, $getEnvMnu->menu_id);
-                    }
+                        foreach($getEnvID as $getEnvID) {
 
-                    Session::put('GROUPID', $groupid);
-                    Session::put('NAME1', $name1);
-                    Session::put('NAME2', $name2);
-                    Session::put('NAME3', $name3);
-                    Session::put('USERNAME', Auth::User()->username);
-                    Session::put('OFFICEID', $officeid);
-                    Session::put('OFFICENAME', $officename);
-                    Session::put('SALESID', $salesid);
-                    Session::put('PASSWORD', $request->password);
-                    Session::put('ACTIVE_FLAG', Auth::User()->active_flag);
-                    Session::put('USERIP', $clientIP);
-                   
-                    return redirect()->route('home')->with('success','Voila! Succesfully login');
+                            $getVarValue1 = DB::table('sec_env_conf')
+                                        ->select('var_value')
+                                        ->where('appl_id','=', 'SUNRISEWEB')
+                                        ->where('var_id','=', $getEnvID->var_id)
+                                        ->where('active_flag','=', 'Y')
+                                        ->Value('var_value');
+
+                            Session::put( $getEnvID->var_id, $getVarValue1);
+
+
+                            $getVarValue2 = DB::table('sec_env_conf')
+                                        ->select('var_value')
+                                        ->where('appl_id','=', 'SUNRISEWEB')
+                                        ->where('group_id','=', $groupid)
+                                        ->where('var_id','=', $getEnvID->var_id)
+                                        ->where('active_flag','=', 'Y')
+                                        ->Value('var_value');
+
+                            Session::put( $getEnvID->var_id, $getVarValue2);
+
+
+                            $getVarValue3 = DB::table('sec_env_conf')
+                                        ->select('var_value')
+                                        ->where('appl_id','=', 'SUNRISEWEB')
+                                        ->Where('user_id2', '=', Auth::User()->username)
+                                        ->where('var_id','=', $getEnvID->var_id)
+                                        ->where('active_flag','=', 'Y')
+                                        ->Value('var_value');
+
+                            Session::put( $getEnvID->var_id, $getVarValue3);
+
+                        }
+
+                        foreach($getEnvMnu as $getEnvMnu) {
+                            Session::put($getEnvMnu->menu_id, $getEnvMnu->menu_id);
+                        }
+
+                        Session::put('GROUPID', $groupid);
+                        Session::put('NAME1', $name1);
+                        Session::put('NAME2', $name2);
+                        Session::put('NAME3', $name3);
+                        Session::put('USERNAME', Auth::User()->username);
+                        Session::put('OFFICEID', $officeid);
+                        Session::put('OFFICENAME', $officename);
+                        Session::put('SALESID', $salesid);
+                        Session::put('PASSWORD', $request->password);
+                        Session::put('ACTIVE_FLAG', Auth::User()->active_flag);
+                        Session::put('USERIP', $clientIP);
+                    
+                        return redirect()->route('home')->with('success','Voila! Succesfully login');
+
+                    }   
                   
                 }
-                else
-                {
+                else{
                     Auth::logout();
                     Session::flush();
                     return redirect(url('login'))->withInput()->with('alert','Your ID is blocked. Please contact our admin');
                 }
-            // }
-        }else
-        {
+        } else {
             return redirect()->route('login')->with('alert','Sorry, your username and password is incorrect. Please try again.');
         }
     }

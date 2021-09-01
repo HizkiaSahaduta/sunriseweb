@@ -700,4 +700,83 @@ class JSONController extends Controller
 
 
     }
+
+    public function getAllSalesContract(Request $request){
+
+        $search = $request->input('term');
+
+        $result = DB::connection("sqlsrv2")
+                    ->select(DB::raw("select DISTINCT top 20 ltrim(rtrim(order_id)) as order_id from view_order_status
+                    where order_id like '%$search%'"));
+
+        return response()->json($result);
+       
+    }
+
+    public function getSalesContract(Request $request){
+
+        $groupid = Session::get('GROUPID');
+
+        if ($groupid != 'KKA') {
+
+            $where = 'where 1=1';
+            $txtSalesman = $request->txtSalesman;
+            if ($txtSalesman) {
+                $where .= " and salesman_id = '$txtSalesman'";
+            }
+            $txtCustomer = $request->txtCustomer;
+            if ($txtCustomer) {
+                $where .= " and cust_id = '$txtCustomer'";
+            }
+
+            $result = DB::connection("sqlsrv2")
+                        ->select(DB::raw("select DISTINCT ltrim(rtrim(order_id)) as order_id from view_order_status $where"));
+
+            return response()->json($result);
+        }
+        else {
+
+            $result = DB::connection("sqlsrv2")
+                    ->select(DB::raw("select DISTINCT ltrim(rtrim(order_id)) as order_id from view_order_status where cust_id  = 'C044'"));
+
+            return response()->json($result);
+
+        }
+       
+    }
+
+    public function getCustomer2(Request $request){
+
+        $groupid = Session::get('GROUPID');
+
+        if ($groupid != 'KKA') {
+
+            $where = 'where 1=1';
+            $txtSalesman = $request->txtSalesman;
+            if ($txtSalesman) {
+                $where .= " and salesman_id = '$txtSalesman'";
+            }
+            $txtOrderID = $request->txtOrderID;
+            if ($txtOrderID) {
+                $where .= " and order_id = '$txtOrderID'";
+            }
+    
+            $result = DB::connection("sqlsrv2")
+                        ->select(DB::raw("select DISTINCT ltrim(rtrim(cust_id)) as cust_id, ltrim(rtrim(cust_name)) as cust_name from view_order_status $where"));
+    
+            return response()->json($result);
+
+        }
+        else {
+
+            $result = DB::connection("sqlsrv2")
+                        ->select(DB::raw("select DISTINCT ltrim(rtrim(cust_id)) as cust_id, ltrim(rtrim(cust_name)) as cust_name from view_order_status where cust_id = 'C044'"));
+    
+            return response()->json($result);
+
+        }
+
+       
+       
+    }
 }
