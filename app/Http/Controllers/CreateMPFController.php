@@ -94,6 +94,9 @@ class CreateMPFController extends Controller
         $txtOrderId = $request->txtOrderId;
         $txtRemark = $request->txtRemark;
 
+        $txtType = $request->txtType;
+        $txtExtendType = $request->txtExtendType;
+
         if(!$txtOrderId){
             $txtOrderId = '';
         }
@@ -139,7 +142,9 @@ class CreateMPFController extends Controller
                                     'order_id' => $txtOrderId,
                                     'remark1' => $txtRemark,
                                     'attach_path' => $txtPhotoName,
-                                    'userid' => $userid
+                                    'userid' => $userid,
+                                    'type' => $txtType,
+                                    'extend_id' => $txtExtendType
                                 ]);
 
             return response()->json(['response' => "Success"]);
@@ -238,6 +243,20 @@ class CreateMPFController extends Controller
 
         return response()->json(['html' => $html]);
 
+
+    }
+
+    public function fillMpfExtend(Request $request){
+
+        $type_id = $request->type_id;
+
+        $result = DB::connection('sqlsrv2')
+                        ->table('mst_extend')
+                        ->where('type', '=', $type_id)
+                        ->where('active_flag', '=', 'Y')
+                        ->get();
+
+        return response()->json($result);
 
     }
 

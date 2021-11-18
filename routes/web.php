@@ -199,6 +199,7 @@ Route::get('needOrderID', 'CreateMPFController@needOrderID');
 Route::get('fillReceiver', 'CreateMPFController@fillReceiver');
 Route::post('saveApprovalForm', 'CreateMPFController@saveApprovalForm');
 Route::post('checkOrder', 'CreateMPFController@checkOrder');
+Route::post('fillMpfExtend', 'CreateMPFController@fillMpfExtend');
 
 Route::get('ListMPF', 'ListMPFController@index')->name('ListMPF');
 Route::post('getListMPF', 'ListMPFController@getListMPF')->name('getListMPF');
@@ -208,7 +209,6 @@ Route::post('rejectApproval', 'ListMPFController@rejectApproval')->name('rejectA
 
 Route::get('CcBccMPF', 'CcBccMPFController@index')->name('CcBccMPF');
 Route::post('getListCcMPF', 'CcBccMPFController@getListCcMPF')->name('getListCcMPF');
-
 
 // Purchasing Analysis
 Route::get('PurchasingAnalysis', 'PurchasingAnalysisController@index')->name('PurchasingAnalysis');
