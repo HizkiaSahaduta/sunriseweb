@@ -168,6 +168,28 @@
                         </div>
                     </div>
 
+                    <div class="row rowType">
+                        <div class="input-field col m12 s12">
+                            <i class="material-icons prefix">layers</i>
+                            <select class="browser-default" id="txtType" name="txtType">
+                                    <option></option>
+                                    <option value='PP'>PPP (P3)</option>
+                                    <option value='SC'>SC (Sales Contract)</option>
+                            </select>
+                            <label>Type: </label>
+                        </div>
+                    </div>
+
+                    <div class="row rowExtend">
+                        <div class="input-field col m12 s12">
+                            <i class="material-icons prefix">layers</i>
+                            <select class="browser-default" id="txtExtendType" name="txtExtendType">
+                                    <option></option>
+                            </select>
+                            <label>Extend Type: </label>
+                        </div>
+                    </div>
+
                     <div class="row">
                         <div class="input-field col s12">
                             <i class="material-icons prefix">branding_watermark</i>
@@ -298,10 +320,23 @@ $(document).ready(function() {
 
     $(".modal").modal();
 
-    $('#txtCategory').select2({
+    $('#txtCategory').prepend('<option selected></option>').select2({
         placeholder: "Choose Subject",
         allowClear: true
     });
+
+    $('#txtType').prepend('<option selected></option>').select2({
+        placeholder: "Choose Type"
+    });
+
+    $('#txtExtendType').prepend('<option selected></option>').select2({
+        placeholder: "Choose Extend"
+    });
+
+    $('#txtReceiver').val('');
+
+    $('.rowType').hide();
+    $('.rowExtend').hide();
 
     $('#txtRemark').keyup(function(){
 		len = this.value.length
@@ -337,7 +372,8 @@ $(document).ready(function() {
                 type: "GET",
                 dataType: "json",
                 data: {
-                    'cat_id': cat_id,
+                    '_token': '{{ csrf_token() }}',
+                    'cat_id': cat_id
                 },
                 success:function(data) {
                     
@@ -363,7 +399,8 @@ $(document).ready(function() {
                 type: "GET",
                 dataType: "json",
                 data: {
-                    'cat_id': cat_id,
+                    '_token': '{{ csrf_token() }}',
+                    'cat_id': cat_id
                 },
                 success:function(data) {
                     
@@ -372,7 +409,72 @@ $(document).ready(function() {
                 }
             });
 
+            if(cat_id == '01'){
+
+                $('.rowType').show();
+
+            } else {
+                $('.rowType').hide();
+            }
+
         }
+
+    });
+
+    $('#txtType').change(function(){
+
+        var type_id = $(this).val();
+
+        $.ajax({
+            url: 'fillMpfExtend',
+            type: "POST",
+            dataType: "json",
+            data: {
+                '_token': '{{ csrf_token() }}',
+                'type_id': type_id
+            },
+            success:function(data) {
+                
+                if(data!=""){
+
+                    $('.rowExtend').show();
+                    
+                    $('#txtExtendType').empty();
+                    // $.each(data, function(index, element) {
+                    //     $('select[name="txtExtendType"]').append('<option value="'+ element.extend_id +'">'+ element.descr + '</option>');
+                    // });
+
+                    $.each(data, function(index, element) {
+                        $('#txtExtendType').append('<option value="' + element.extend_id + '">'+ element.descr +' | '+ element.day +' Hari</option>');
+                    });
+
+                } else {
+
+                    $('.rowExtend').hide();
+
+                }
+                
+            }
+        });
+
+        // $('#txtExtendType').select2({
+
+        //     ajax: {
+        //         type: 'POST',
+        //         url: 'fillMpfExtend',
+        //         data: {
+        //             '_token': '{{ csrf_token() }}',
+        //             'type_id': type_id
+        //         },
+        //         dataType: 'json'
+        //         processResults: function (data) {
+        //         return {
+        //             results: data.results
+        //         };
+        //         }
+        //     }
+
+        // });
 
     });
 
