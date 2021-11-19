@@ -779,4 +779,13 @@ class JSONController extends Controller
        
        
     }
+
+    public function getBranchOffice(Request $request)
+    {
+        $result = DB::connection("sqlsrv2")
+        ->select(DB::raw("select LTRIM(RTRIM(office_id)) as office_id, LTRIM(RTRIM(office)) as office, LTRIM(RTRIM(address)) as address
+        from branch_office"));
+
+        return response()->json($result);
+    }
 }

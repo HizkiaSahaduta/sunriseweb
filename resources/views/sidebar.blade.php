@@ -237,6 +237,14 @@
                         </a>
                     </li>
                     @endif
+
+                    {{-- <li>
+                        <a href="{{ route('PrApproval') }}" id="PrApp">
+                            <i class="material-icons">radio_button_unchecked</i>
+                            <span>PR Approval</span>
+                        </a>
+                    </li> --}}
+
                 </ul>
             </div>
         </li>

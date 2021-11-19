@@ -148,6 +148,7 @@ Route::get('listPIC/id={id}', 'JSONController@listPIC');
 Route::get('listDept/id={id}', 'JSONController@listDept');
 Route::get('listPICDept/id={id}&pic={pic}', 'JSONController@listPICDept');
 Route::get('listDeptPIC/id={id}&pic={pic}', 'JSONController@listDeptPIC');
+Route::get('getOffice', 'JSONController@getBranchOffice')->name('getOffice');
 
 
 //-- Report - Purchase Order
@@ -209,7 +210,6 @@ Route::post('rejectApproval', 'ListMPFController@rejectApproval')->name('rejectA
 Route::get('CcBccMPF', 'CcBccMPFController@index')->name('CcBccMPF');
 Route::post('getListCcMPF', 'CcBccMPFController@getListCcMPF')->name('getListCcMPF');
 
-
 // Purchasing Analysis
 Route::get('PurchasingAnalysis', 'PurchasingAnalysisController@index')->name('PurchasingAnalysis');
 Route::post('chartPurchasingAnalysis', 'PurchasingAnalysisController@chartPurchasingAnalysis')->name('chartPurchasingAnalysis');
@@ -224,8 +224,12 @@ Route::post('getCustomer2', 'JSONController@getCustomer2')->name('getCustomer2')
 Route::post('getOrderReport', 'OrderReportController@getOrderReport')->name('getOrderReport');
 Route::post('getOrderReportDetail', 'OrderReportController@getOrderReportDetail')->name('getOrderReportDetail');
 
-
-
-
-
-
+//PR Approval
+Route::get('PrApproval', 'PrController@index')->name('PrApproval');
+Route::post('getPrHdr', 'PrController@getPrHdr');
+Route::post('getDetailRawYesPr', 'PrController@getDetailRawYes');
+Route::post('getDetailRawNoPr', 'PrController@getDetailRawNo');
+Route::post('setApprovePr', 'PrController@setApprove')->name('setApprovePr');
+Route::post('setResetPr', 'PrController@setReset')->name('setResetPr');
+Route::post('setApprove2Pr', 'PrController@setApprove2')->name('setApprove2Pr');
+Route::post('setReset2Pr', 'PrController@setReset2')->name('setReset2Pr');
