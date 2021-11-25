@@ -116,7 +116,7 @@
                             <i class="material-icons prefix">business</i>
                             <select class="basic browser-default" id="mill_id" name="mill_id">
                                 <option></option>
-                                <option value="SR">Sunrise Steel</option>
+                                {{-- <option value="SR">Sunrise Steel</option> --}}
                                 <option value="SM">Sunrise Mill</option>
                             </select>
                             <label>Mill ID</label>
